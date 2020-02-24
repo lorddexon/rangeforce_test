@@ -2,7 +2,7 @@
     <div class="repos">
         <h1>Find repo</h1>
         <div class="search__header">
-            <input type="text" v-model="search"><button @click="findRepo">Search</button>
+            <input type="text" v-model="search" @keyup.enter="findRepo"><button @click="findRepo">Search</button>
         </div>
         <div class="search__result">
             <RepoBrief v-for="(repo, index) in repos" :key="index" :repo="repo" :repoIndex="index" @displayModal="displayModal"></RepoBrief>
@@ -16,6 +16,8 @@
 import { Component, Vue} from 'vue-property-decorator';
 import RepoBrief from './RepoBrief.vue';
 import Modal from './Modal.vue';
+import VModal from 'vue-js-modal'
+
 @Component({
     components: {
         RepoBrief
@@ -25,7 +27,9 @@ export default class Search extends Vue {
     search = '';
     repos: Repo[] = [];
     findRepo(): void {
+        this.$store.commit('START_LOADING');
         this.repos = this.$store.state.repos.filter((repo: Repo) => {
+            this.$store.commit('STOP_LOADING');
             return repo.full_name === this.search || repo.name === this.search
         });
     }

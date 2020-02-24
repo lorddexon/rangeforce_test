@@ -1,6 +1,6 @@
 <template>
     <div class="toast__messages">
-        <ToastMessage v-for="(message, index) in toastMessages" :key="index" :repoIndex="message.index" :message="message" :messageIndex="index"></ToastMessage>
+        <ToastMessage v-for="(message, index) in toastMessages" :key="message.toastNumber" :message="message" :messageIndex="index"></ToastMessage>
     </div>
 </template>
 <script lang="ts">
@@ -11,8 +11,12 @@ import ToastMessage from './ToastMessage.vue';
         ToastMessage
     }
 })
-export default class ToastMessages extends Vue {    
+export default class ToastMessages extends Vue {
     get toastMessages() {
+        if (this.$store.state.toastMessages.length > 1) {
+            console.warn(this.$store.state.toastMessages[0].repo.id)
+            console.warn(this.$store.state.toastMessages[1].repo.id)
+        }
         return this.$store.state.toastMessages;
     }
 }
@@ -38,10 +42,6 @@ interface Repo {
         justify-content: space-between;
         display: flex;
         flex-direction: column;
-    }
-    .toast__message {
-        margin: 10px 10px 0 0;
-        border: 1px solid #ccc;
     }
     .toast__buttons {
         display: flex;

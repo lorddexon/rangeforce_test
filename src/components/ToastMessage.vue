@@ -19,8 +19,6 @@ export default class ToastMessage extends Vue {
     message!: Message
     @Prop()
     messageIndex!: number
-    @Prop()
-    repoIndex!: number
 
     hideMessage(): void {        
         clearTimeout(this.timeout);
@@ -31,15 +29,15 @@ export default class ToastMessage extends Vue {
     }
     undo(): void {      
         clearTimeout(this.timeout);
-        this.$store.dispatch('undo', {index: this.messageIndex, repoIndex: this.repoIndex});
+        this.$store.dispatch('undo', {index: this.messageIndex});
     }
-    fadeOut() {
+    fadeOut(): void {
         this.isFaded = false;
         clearTimeout(this.timeout);
         this.isFaded = true;
         this.timeout = setTimeout(() => {
             this.$store.commit('REMOVE_MESSAGE', this.messageIndex);
-        }, 3000)
+        }, 2700)
     }
     created() {
         this.fadeOut();
@@ -58,17 +56,22 @@ interface Repo {
 interface Message {
 	status: string;
 	repo: Repo;
-	index: number;
+    index: number;
+    toastNumber: number;
 }
 </script>
 <style lang="scss" scoped>
     .toast__message {
         position: relative;
         left: 300px;
+        margin: 10px 10px 0 0;
+        background: #F8F8F8;
         &.faded {
             animation-name: message;
             animation-duration: 3s;
         }
+        -webkit-box-shadow: 0 0 5px #ccc;
+        box-shadow: 0 0 5px #ccc;
     }
     .toast__buttons {
         display: flex;

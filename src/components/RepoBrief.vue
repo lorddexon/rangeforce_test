@@ -1,7 +1,7 @@
 <template>
     <div v-if="isVisible" class="repo__brief">
         <div class="repo__name">Name: <span>{{repo.name}}</span></div>
-        <div class="repo__author">Author {{repo.owner.login}}</div>
+        <div class="repo__author">Author: {{repo.owner.login}}</div>
         <div class="repo__stars">Stars: {{stars}}</div>
         <div class="repo__forks">Forks: {{forks}}</div>
         <div class="repo__url"><span @click="openModal">View Readme</span> (<a :href="repo.html_url" target="_blank">{{repo.html_url}}</a>)</div>
@@ -25,11 +25,11 @@ export default class RepoBrief extends Vue {
     repoIndex!: number
 
     @Watch('$store.state.bookmarkedRepos', {deep: true})
-    onReposChanged() {
+    onReposChanged(): void {
         this.checkBookmarkStatus();
     }
     @Watch('repo')
-    orRepoChanged() {
+    orRepoChanged(): void {
         this.checkBookmarkStatus();
         this.getRepoInfo();
     }

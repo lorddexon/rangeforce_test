@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vue-simplemde :value="readme" ref="markdownEditor" :scrollable="true"/>
+        <vue-simplemde :value="readme" ref="markdownEditor"/>
     </div>
 </template>
 
@@ -18,5 +18,5 @@ export default class Modal extends Vue {
 } 
 </script>
 <style lang="scss" scoped>
-@import '~simplemde/dist/simplemde.min.css';
+    @import '~simplemde/dist/simplemde.min.css';
 </style>

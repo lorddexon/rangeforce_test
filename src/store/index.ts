@@ -14,38 +14,48 @@ export default new Vuex.Store({
 			}
 		},
 		toastMessages: [] as Message[],
-		isLoading: false
+		isLoading: false,
+		// for unique :key
+		toastNumber: 0
 	},
 	mutations: {
 		GET_REPOS(state, repos) {
 			state.repos = repos;
 		},
+
 		LOAD_BOOKMARKS(state) {
 			state.bookmarkedRepos = JSON.parse(localStorage.getItem('bookmarks') as string);
 		},
-		ADD_BOOKMARK(state, repo, index = 0) {
+
+		ADD_BOOKMARK(state, {repo, index}) {
 			state.bookmarkedRepos.splice(index, 0, repo);
 			localStorage.setItem('bookmarks', JSON.stringify(state.bookmarkedRepos));
 		},
-		REMOVE_BOOKMARK(state, repo) {
+
+		REMOVE_BOOKMARK(state, {repo}) {
 			const index = state.bookmarkedRepos.findIndex((r: Repo) => {
 				return r.id === repo.id;
 			})
 			state.bookmarkedRepos.splice(index, 1);
 			localStorage.setItem('bookmarks', JSON.stringify(state.bookmarkedRepos));
 		},
+
 		ADD_MESSAGE(state, {repo, status, index}) {
-			state.toastMessages.push({status: status, repo: repo, index: index});
+			state.toastNumber++;
+			state.toastMessages.push({status: status, repo: repo, index: index, toastNumber: state.toastNumber});
 		},
+
 		REMOVE_MESSAGE(state, index) {
 			const i = state.toastMessages.findIndex((m: Message) => {
 				return m.index === index;
 			})
 			state.toastMessages.splice(i, 1);
 		},
+
 		START_LOADING(state) {			
 			state.isLoading = true;
 		},
+
 		STOP_LOADING(state) {			
 			setTimeout(() => {
 				state.isLoading = false;
@@ -82,6 +92,7 @@ export default new Vuex.Store({
 				return false;
 			});
 		},
+
 		getReadme({state}, url) {
 			return axios.get(url).then(response => {
 				return response.data;
@@ -97,20 +108,20 @@ export default new Vuex.Store({
 		},
 
 		addBookmark({state}, {repo, index}) {
-			this.commit('ADD_MESSAGE', {repo:repo, status: 'added', index: index})
-			this.commit('ADD_BOOKMARK', repo);
+			this.commit('ADD_MESSAGE', {repo: repo, status: 'added', index})
+			this.commit('ADD_BOOKMARK', {repo, index});
 		},
 
 		removeBookmark({state}, {repo, index}) {
-			this.commit('ADD_MESSAGE', {repo:repo, status: 'removed', index: index})
-			this.commit('REMOVE_BOOKMARK', repo);			
+			this.commit('ADD_MESSAGE', {repo: repo, status: 'removed', index: index})
+			this.commit('REMOVE_BOOKMARK', {repo});			
 		},
 
-		undo({state}, {index, repoIndex}) {
+		undo({state}, {index}) {
 			if (state.toastMessages[index].status === 'added') {
 				this.commit('REMOVE_BOOKMARK', state.toastMessages[index].repo)
 			} else {
-				this.commit('ADD_BOOKMARK', state.toastMessages[index].repo, repoIndex)
+				this.commit('ADD_BOOKMARK', {repo: state.toastMessages[index].repo, index: state.toastMessages[index].index})
 			}
 			this.commit('REMOVE_MESSAGE', index)
 		}
@@ -131,4 +142,5 @@ interface Message {
 	status: string;
 	repo: Repo;
 	index: number;
+	toastNumber: number;
 }

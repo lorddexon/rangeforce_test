@@ -1,12 +1,17 @@
 <template>
     <div>
         <transition name="fade" mode="out-in">
-            <div class="loading" v-show="isLoading === true">Loading...</div>
+            <div class="loading" v-show="isLoading === true">
+                <div class="hourglass"></div>
+            </div>
         </transition>
+
         <Menu></Menu>
+
         <transition name="fade" mode="out-in">
             <router-view/>
         </transition>
+
         <ToastMessages></ToastMessages>
     </div>
 </template>
@@ -40,6 +45,12 @@ export default class Main extends Vue {
     }
     * {
         box-sizing: border-box;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
     h1 {
         text-align: center;
@@ -55,6 +66,37 @@ export default class Main extends Vue {
         display: flex;
         justify-content: center;
         align-items: center;
+        .hourglass {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .hourglass:after {
+            content: " ";
+            display: block;
+            border-radius: 50%;
+            width: 0;
+            height: 0;
+            margin: 8px;
+            box-sizing: border-box;
+            border: 32px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: hourglass 1.2s infinite;
+        }
+        @keyframes hourglass {
+            0% {
+                transform: rotate(0);
+                animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+            50% {
+                transform: rotate(900deg);
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+            100% {
+                transform: rotate(1800deg);
+            }
+        }
     }
     .repos {
         width: 700px;
