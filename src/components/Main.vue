@@ -20,7 +20,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Menu from './Menu.vue';
 import ToastMessages from './ToastMessages.vue';
-import Modal from './Modal.vue';
 
 @Component({
     components: {

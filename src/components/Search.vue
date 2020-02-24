@@ -16,7 +16,6 @@
 import { Component, Vue} from 'vue-property-decorator';
 import RepoBrief from './RepoBrief.vue';
 import Modal from './Modal.vue';
-import VModal from 'vue-js-modal';
 
 @Component({
     components: {

@@ -10,6 +10,8 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 @Component
 export default class RepoBrief extends Vue {
