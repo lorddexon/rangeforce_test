@@ -28,7 +28,11 @@ export default new Vuex.Store({
 		},
 
 		ADD_BOOKMARK(state, {repo, index}) {
-			state.bookmarkedRepos.splice(index, 0, repo);
+			if (state.bookmarkedRepos.findIndex((r: Repo) => {
+				return r.id === repo.id;
+			}) === -1) {
+				state.bookmarkedRepos.splice(index, 0, repo);
+			}
 			localStorage.setItem('bookmarks', JSON.stringify(state.bookmarkedRepos));
 		},
 
@@ -36,8 +40,10 @@ export default new Vuex.Store({
 			const index = state.bookmarkedRepos.findIndex((r: Repo) => {
 				return r.id === repo.id;
 			})
-			state.bookmarkedRepos.splice(index, 1);
-			localStorage.setItem('bookmarks', JSON.stringify(state.bookmarkedRepos));
+			if (index !== -1) {
+				state.bookmarkedRepos.splice(index, 1);
+			}			
+			localStorage.setItem('bookmarks', JSON.stringify(state.bookmarkedRepos));	
 		},
 
 		ADD_MESSAGE(state, {repo, status, index}) {
@@ -45,11 +51,11 @@ export default new Vuex.Store({
 			state.toastMessages.push({status: status, repo: repo, index: index, toastNumber: state.toastNumber});
 		},
 
-		REMOVE_MESSAGE(state, index) {
-			const i = state.toastMessages.findIndex((m: Message) => {
-				return m.index === index;
+		REMOVE_MESSAGE(state, repo) {
+			const index = state.toastMessages.findIndex((m: Message) => {
+				return m.repo.id === repo.id;
 			})
-			state.toastMessages.splice(i, 1);
+			state.toastMessages.splice(index, 1);
 		},
 
 		START_LOADING(state) {			
@@ -72,6 +78,7 @@ export default new Vuex.Store({
 			}).catch(e => {
 				console.error(`${e}: that's an error`);
 			});
+
 			//taking bookmars from localStorage
 			this.commit('LOAD_BOOKMARKS');
 		},
@@ -108,7 +115,7 @@ export default new Vuex.Store({
 		},
 
 		addBookmark({state}, {repo, index}) {
-			this.commit('ADD_MESSAGE', {repo: repo, status: 'added', index})
+			this.commit('ADD_MESSAGE', {repo: repo, status: 'added', index: index})
 			this.commit('ADD_BOOKMARK', {repo, index});
 		},
 
@@ -117,13 +124,13 @@ export default new Vuex.Store({
 			this.commit('REMOVE_BOOKMARK', {repo});			
 		},
 
-		undo({state}, {index}) {
-			if (state.toastMessages[index].status === 'added') {
-				this.commit('REMOVE_BOOKMARK', state.toastMessages[index].repo)
+		undo({state}, {message}) {
+			if (message.status === 'added') {
+				this.commit('REMOVE_BOOKMARK', {repo: message.repo})
 			} else {
-				this.commit('ADD_BOOKMARK', {repo: state.toastMessages[index].repo, index: state.toastMessages[index].index})
+				this.commit('ADD_BOOKMARK', {repo: message.repo, index: message.index})
 			}
-			this.commit('REMOVE_MESSAGE', index)
+			this.commit('REMOVE_MESSAGE', message.repo)
 		}
 	}
 })

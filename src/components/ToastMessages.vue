@@ -13,10 +13,6 @@ import ToastMessage from './ToastMessage.vue';
 })
 export default class ToastMessages extends Vue {
     get toastMessages() {
-        if (this.$store.state.toastMessages.length > 1) {
-            console.warn(this.$store.state.toastMessages[0].repo.id)
-            console.warn(this.$store.state.toastMessages[1].repo.id)
-        }
         return this.$store.state.toastMessages;
     }
 }

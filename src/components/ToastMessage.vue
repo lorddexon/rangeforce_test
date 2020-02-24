@@ -23,20 +23,18 @@ export default class ToastMessage extends Vue {
     hideMessage(): void {        
         clearTimeout(this.timeout);
         this.isFaded = true;
-        this.timeout = setTimeout(() => {
-            this.$store.commit('REMOVE_MESSAGE', this.messageIndex)
-        }, 200)
+        this.$store.commit('REMOVE_MESSAGE', this.message.repo);
     }
     undo(): void {      
         clearTimeout(this.timeout);
-        this.$store.dispatch('undo', {index: this.messageIndex});
+        this.$store.dispatch('undo', {message: this.message});
     }
     fadeOut(): void {
         this.isFaded = false;
         clearTimeout(this.timeout);
         this.isFaded = true;
         this.timeout = setTimeout(() => {
-            this.$store.commit('REMOVE_MESSAGE', this.messageIndex);
+            this.$store.commit('REMOVE_MESSAGE', this.message.repo);
         }, 2700)
     }
     created() {

@@ -37,10 +37,10 @@ export default class RepoBrief extends Vue {
     @Emit('displayModal')
     displayModal(url: string) {}
 
-    openModal() {
+    openModal(): void {
         this.$emit('displayModal', `${this.repo.url}/contents/README.md`);
     }
-    toggleBookmark() {
+    toggleBookmark(): void {
         this.bookmarked = !this.bookmarked;
         if (this.bookmarked === true) {
             this.$store.dispatch('addBookmark', {repo: this.repo, index: this.repoIndex});            
