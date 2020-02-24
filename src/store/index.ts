@@ -77,7 +77,7 @@ export default new Vuex.Store({
 				this.commit('GET_REPOS', response.data);
 				this.commit('STOP_LOADING');
 			}).catch(e => {
-				console.error(`${e}: that's an error`);
+				// console.error(`${e}: that's an error`);
 			});
 
 			//taking bookmars from localStorage
@@ -89,7 +89,7 @@ export default new Vuex.Store({
 			return axios.get(url).then(response => {
 				return response.data;
 			}).catch(e => {
-				console.error(`${e}: that's an error`);
+				// console.error(`${e}: that's an error`);
 			});
 		},		
 
@@ -105,7 +105,7 @@ export default new Vuex.Store({
 			return axios.get(url).then(response => {
 				return response.data;
 			}).catch(e => {
-				console.error(`${e}: that's an error`);
+				// console.error(`${e}: that's an error`);
 			});
 		},
 
