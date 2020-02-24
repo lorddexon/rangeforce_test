@@ -16,7 +16,7 @@
 import { Component, Vue} from 'vue-property-decorator';
 import RepoBrief from './RepoBrief.vue';
 import Modal from './Modal.vue';
-import VModal from 'vue-js-modal'
+import VModal from 'vue-js-modal';
 
 @Component({
     components: {
@@ -33,6 +33,7 @@ export default class Search extends Vue {
             return repo.full_name === this.search || repo.name === this.search
         });
     }
+  
     
     async displayModal(url: string) {
         this.$store.commit('START_LOADING');

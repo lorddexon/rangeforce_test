@@ -1,15 +1,16 @@
 <template>
     <div>
-        <vue-simplemde :value="readme" ref="markdownEditor"/>
+        <markdown-it-vue class="md-body" :content="readme" />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import VueSimplemde from 'vue-simplemde';
+import MarkdownItVue from 'markdown-it-vue';
+import 'markdown-it-vue/dist/markdown-it-vue.css'
 @Component({
     components: {
-        VueSimplemde
+        MarkdownItVue
     }
 })
 export default class Modal extends Vue {
@@ -17,6 +18,13 @@ export default class Modal extends Vue {
     readme!: string;
 } 
 </script>
-<style lang="scss" scoped>
-    @import '~simplemde/dist/simplemde.min.css';
+<style lang="scss">
+    #modals-container {
+        .v--modal-overlay {
+            .v--modal-box {
+                padding: 10px;
+                overflow-y: auto;
+            }
+        }
+    }
 </style>
