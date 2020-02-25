@@ -10,9 +10,19 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class Menu extends Vue {
 	get bookmarkedRepos() {
-		return this.$store.state.bookmarkedRepos.length ;
+		return this.$store.state.bookmarkedRepos !== null ? this.$store.state.bookmarkedRepos.length : 0;
 	}
 } 
+interface Repo {
+	id: number;
+	name: string;
+	full_name: string;
+	owner: {login: string};
+	forks_count: number;
+	stargazers_count: number;
+    url: string;
+    html_url: string;
+}
 </script>
 <style lang="scss" scoped>
 	#nav {
