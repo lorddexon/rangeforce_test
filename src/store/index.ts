@@ -25,7 +25,7 @@ export default new Vuex.Store({
 		},
 
 		LOAD_BOOKMARKS(state) {
-			state.bookmarkedRepos = JSON.parse(localStorage.getItem('bookmarks') as string);
+			state.bookmarkedRepos = JSON.parse(localStorage.getItem('bookmarks') as string) || [];
 		},
 
 		ADD_BOOKMARK(state, {repo, index}) {
